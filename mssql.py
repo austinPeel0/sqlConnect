@@ -22,17 +22,17 @@ class pull():
 		 
     def columns(self):            
         y = self._pullSQLData("SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('"+self.schema+"."+ self.table+"')")
-        df = pd.DataFrame(y)
+        df = pd.DataFrame.from_records(y)
         columns = list(df[1])
         return columns
     
     def data(self,cols=None):
         if cols is not None:
             query = self._getQuery(cols)
-            df = pd.DataFrame(self._pullSQLData(query))
+            df = pd.DataFrame.from_records(self._pullSQLData(query))
             df.columns =  cols
         else:
-            df = pd.DataFrame(self._pullSQLData("SELECT * FROM ["+ database+"].["+self.schema+"].["+ self.table+"]"))
+            df = pd.DataFrame.from_records(self._pullSQLData("SELECT * FROM ["+ database+"].["+self.schema+"].["+ self.table+"]"))
             names = self.columns()
             df.columns =  names
         return df
